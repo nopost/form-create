@@ -1,1 +1,22 @@
-{ "presets": [ "es2015" ] }
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "modules": false,
+        "targets": {
+          "chrome": 59,
+          "edge": 13,
+          "firefox": 50,
+          "ie": 9
+        },
+        "useBuiltIns": "usage",
+        "corejs": "3.0.0"
+      }
+    ]
+  ],
+  "plugins": [
+    "add-module-exports"
+  ],
+  "comments": false
+}

@@ -1,10 +1,26 @@
-import formCreate from './core/formCreate';
+/**
+ *
+ * JS表单生成器 | iviewUI 版本
+ * Author: xaboy
+ * Github: https://github.com/xaboy/form-create
+ * Document: http://www.form-create.com
+ */
 
-if(typeof window !== 'undefined'){
-    window["formCreate"] = formCreate;
-    if (window.Vue && (window.iview || window.iView)) {
-        window.Vue.use(formCreate);
+import formCreate, {install, setDrive} from './core/formCreate';
+import drive from './components/iview/index'
+
+setDrive(drive);
+
+if (typeof window !== 'undefined') {
+    window.formCreate = formCreate;
+
+    if (window.Vue) {
+        install(Vue);
     }
 }
 
-module.exports.default = module.exports = formCreate;
+const maker = formCreate.maker;
+
+export {maker}
+
+export default formCreate;

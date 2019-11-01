@@ -1,34 +1,50 @@
+const path = require('path');
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const pkg = require("./package.json");
+
 module.exports = {
-    entry: './src/index.js',
-    output: {//输出文件
-        filename: 'form-create.min.js',
-        // filename: 'form-create.js',
-        path: __dirname + '/dist',
-        libraryTarget:'umd'
+    mode: "development",
+    devtool: "source-map",
+    entry: {
+        app: path.join(__dirname, './src', 'index.js')
+    },
+    output: {    //输出
+        filename: 'dist/form-create.js',
+        library: 'formCreate',
+        libraryExport: 'default',
+        libraryTarget: 'umd',
+        umdNamedDefine: true
     },
     module: {
-        loaders: [{
+        rules: [{
             test: /\.js$/,
             exclude: /node_modules/,
             loader: 'babel-loader'
         }]
     },
     plugins: [
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false
-            },
-            output:{
-                comments:false,
-                beautify: false
-            }
+        new webpack.HotModuleReplacementPlugin(),
+        new HtmlWebpackPlugin({
+            template: path.resolve(__dirname, './demo/iview/index.html'),
+            filename: path.resolve(__dirname, './demo/iview/index.html'),
+            inject: true
         }),
-        new webpack.BannerPlugin('form-create v1.3 | github https://github.com/xaboy/form-create | author xaboy')
+        new webpack.DefinePlugin({
+            'process.env.VERSION': `'${pkg.version}'`,
+            'process.env.UI': JSON.stringify('iview')
+        }),
     ],
+    devServer: {
+        openPage: './demo/iview/index.html',
+        hot: true,
+        inline: true,
+        open: true
+    },
     resolve: {
         alias: {
-            'vue': 'vue/dist/vue.js'
+            'vue': 'vue/dist/vue.min.js',
+            'iview': 'iview'
         }
     }
 };
